@@ -1,0 +1,184 @@
+CREATE TABLE T_STUDENT
+(
+StudentID INT NOT NULL,
+StudentFirstName CHAR NOT NULL,
+StudentLastName CHAR NOT NULL,
+StudentBirthday DATETIME NOT NULL,
+StudentEmail CHAR NOT NULL,
+StudentPhone INT NOT NULL,
+StudentCity CHAR NOT NULL,
+StudentState CHAR NOT NULL,
+StudentZipCode INT NOT NULL
+CONSTRAINT CON_PK_T_STUDENT PRIMARY KEY (StudentID)
+)
+INSERT INTO T_STUDENT
+(
+StudentID ,
+StudentFirstName,
+StudentLastName,
+StudentBirthday,
+StudentEmail,
+StudentPhone,
+StudentCity,
+StudentState,
+StudentZipCode
+)
+VALUES
+(101,
+"Santoshi",
+"Rimal",
+"1989-1-16",
+"sr@160@zips.uakron.edu",
+555-555-5111,
+"Brunswick",
+"OH",
+4410042
+)
+
+
+CREATE TABLE T_COURSE
+(
+CourseID INT NOT NULL,
+CourseName CHAR(25) NOT NULL,
+CourseCreditHours INT NOT NULL,
+CONSTRAINT CON_PK_T_COURSE PRIMARY KEY (COURSEID)
+)
+
+INSERT INTO T_COURSE
+(
+CourseID ,
+CourseName,
+CourseCreditHours
+
+)
+VALUES
+(212,
+"DATABASEII",
+3
+)
+
+
+
+CREATE TABLE T_INSTRUCTOR
+(
+InstructorID INT NOT NULL,
+InstructorFirstName CHAR(25) NOT NULL,
+InstructorLastName CHAR(25) NOT NULL,
+CONSTRAINT CON_PK_T_INSTRUCTOR PRIMARY KEY (InstructorID)
+)
+
+INSERT INTO T_INSTRUCTOR
+(
+InstructorID,
+InstructorFirstName,
+InstructorLastName,
+)
+
+VALUES
+(102,
+"MARK",
+"HARMS"
+)
+
+
+
+
+
+
+
+CREATE TABLE T_SEMESTER
+(
+SemesterID INT NOT NULL,
+SemesterName CHAR(25) NOT NULL,
+SemesterStartDate DATETIME NOT NULL,
+SemesterEndDate DATETIME NOT NULL,
+
+CONSTRAINT CON_PK_T_SEMESTER PRIMARY KEY (SemesterID)
+)
+
+INSERT INTO T_SEMESTER
+(
+SemesterID ,
+SemesterName,
+SemesterStartDate,
+SemesterEndDate
+
+)
+VALUES
+(2040,
+"FALL 2108",
+"2018-07-27",
+"2018-12-15"
+)
+
+
+
+
+
+CREATE TABLE T_COURSE_SECTION
+(
+CourseSectionID INT NOT NULL,
+CourseSectionDaysTimeDesc CHAR(25) NOT NULL,
+SemesterID_FK INT NOT NULL,
+CourseID_FK INT NOT NULL,
+InstructorID_FK INT NOT NULL,
+CONSTRAINT CON_PK_T_COURSE_SECTION PRIMARY KEY (CourseSectionID),
+CONSTRAINT CON_FK_T_COURSE_SECTION_T_SEMESTER
+FOREIGN KEY (SemesterID_FK) REFERENCES T_SEMESTER (SemesterID),
+CONSTRAINT CON_FK_T_COURSE_SECTION_T_COURSE
+FOREIGN KEY (CourseID_FK) REFERENCES T_COURSE (CourseID),
+CONSTRAINT CON_FK_T_COURSE_SECTION_T_INSTRUCTOR
+FOREIGN KEY (InstructorID_FK) REFERENCES T_INSTRUCTOR (InstructorID)
+)
+
+
+
+INSERT INTO T_COURSE_SECTION
+(
+CourseSectionID ,
+CourseSectionDaysTimeDesc,
+SemesterID_FK,
+CourseID_FK,
+InstructorID_FK
+
+)
+VALUES
+(150,
+"TUES-THRUS 8PM-9:15PM",
+2040,
+212,
+102
+)
+
+
+CREATE TABLE T_STUDENT_COURSE_SECTION
+(
+StudentCourseSection INT NOT NULL,
+StudentID_FK INT NOT NULL,
+CourseSectionID_FK INT NOT NULL,
+GradeEarnedNumeric INT NOT NULL,
+CONSTRAINT CON_PK_T_STUDENT_COURSE_SECTION PRIMARY KEY (StudentCourseSection),
+CONSTRAINT CON_FK_T_STUDENT_COURSE_SECTION_T_STUDENT
+FOREIGN KEY (StudentID_FK) REFERENCES T_STUDENT (StudentID),
+CONSTRAINT CON_FK_T_STUDENT_COURSE_SECTION_T_COURSE_SECTION
+FOREIGN KEY (CourseSectionID_FK) REFERENCES T_COURSE_SECTION(CourseSectionID)
+)
+
+INSERT INTO T_STUDENT_COURSE_SECTION
+(
+StudentCourseSection  ,
+StudentID_FK,
+CourseSectionID_FK,
+GradeEarnedNumeric
+
+)
+VALUES
+(111,
+101,
+150,
+4
+
+)
+
+
+
