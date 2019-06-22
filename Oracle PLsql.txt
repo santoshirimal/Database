@@ -1,0 +1,504 @@
+- Core structure to declare variables:
+
+declare 
+
+begin
+
+end;
+
+- variable names must begin with alpha characters 
+
+----------------------------------------------------------------------------------------------------------
+
+- Example 1: declaring variables and printing out their contents
+
+DECLARE
+	fname VARCHAR(30);
+	lname VARCHAR(30);
+	age NUMBER(3);
+BEGIN
+	fname := 'John';
+	lname := 'Doe';
+	age := 45;
+
+	DBMS_OUTPUT.PUT_LINE(fname);		** printing values to output screen, for Oracle
+	DMBS_OUTPUT.PUT_LINE(lname);
+	DMBS_OUTPUT.PUT_LINE(age);
+END;
+
+----------------------------------------------------------------------------------------------------------
+
+- Example 2: Initializing values
+
+DECLARE
+	fname VARCHAR(30) := 'John';		** can initialize and declare values all in one line
+	lname VARCHAR(30) := 'Doe';
+	age NUMBER(3) := 45;
+BEGIN
+
+	DBMS_OUTPUT.PUT_LINE(fname);		** printing values to output screen, for Oracle
+	DMBS_OUTPUT.PUT_LINE(lname);
+	DMBS_OUTPUT.PUT_LINE(age);
+END;
+	
+----------------------------------------------------------------------------------------------------------
+
+- Example 3: Add and print the sum of two numbers
+
+DECLARE
+
+	num1 NUMBER(3) := 45;
+	num2 NUMBER(3) := 10;
+	result NUMBER(3);
+BEGIN
+	result := num1 + num2
+	DMBS_OUTPUT.PUT_LINE(num1 || ' + ' || num2 || ' = ' || result);
+
+END;
+
+----------------------------------------------------------------------------------------------------------
+
+- Example 4: Multiple arithmetic operations
+
+DECLARE
+
+	num1 NUMBER(3) := 45;
+	num2 NUMBER(3) := 10;
+	add NUMBER(3);
+	subtract NUMBER(3);
+	multiply NUMBER(3);
+	divide NUMBER(3);
+	
+BEGIN
+	add := num1 + num2;
+	subtract := num 1 - num2;
+	multiply := num1 * num2;
+	divide := num1 / num2;
+
+	DMBS_OUTPUT.PUT_LINE(num1 || ' + ' || num2 || ' = ' || add);
+	DMBS_OUTPUT.PUT_LINE(num1 || ' - ' || num2 || ' = ' || subtract);
+	DMBS_OUTPUT.PUT_LINE(num1 || ' * ' || num2 || ' = ' || multiply);
+	DMBS_OUTPUT.PUT_LINE(num1 || ' / ' || num2 || ' = ' || divide);
+
+END;
+
+----------------------------------------------------------------------------------------------------------
+
+- input/output
+- variable (declaration, assignment, initialization) (core)
+- arithmetic operations (core)
+- selections (if)
+- repetition (loops)
+
+- arrays/records
+- file handling
+
+----------------------------------------------------------------------------------------------------------
+
+- Example 5: selections
+
+DECLARE
+
+	custname VARCHAR2(30);
+	years NUMBER(3) := 10;
+	
+	
+BEGIN
+	custname := 'Bret Favre';
+	years := 3;
+
+	if years = 1 then
+		DMBS_OUTPUT.PUT_LINE(custname || ' ' || 'You are a freshman in college.');
+	elsif years = 2 then
+		DMBS_OUTPUT.PUT_LINE(custname || ' ' || 'You are a sophomore in college.');
+	elsif years = 3 then
+		DMBS_OUTPUT.PUT_LINE(custname || ' ' || 'You are a junior in college.');
+	elsif years = 4 then
+		DMBS_OUTPUT.PUT_LINE(custname || ' ' || 'You are a senior in college.');
+	else
+		DMBS_OUTPUT.PUT_LINE(custname || ' ' || 'You are a grad student.');
+	end if;	
+
+END;
+
+---------------------------------------------------------------------------------------------------------
+
+** elsif has to be without an 'e'
+
+- 3 core fundamentals of loops:
+
+1. Initialization
+2. Condition Testing
+3. Iteration
+
+** 2 main types of looping structures:
+
+- in condition testing: while, do while loops (precondition/postcondition)
+
+---------------------------------------------------------------------------------------------------------
+
+- Example 6: loops
+
+DECLARE
+
+	custname NUMBER(3);
+	
+	
+BEGIN
+	counter := 1;
+
+	WHILE count <= 10 LOOP
+		DMBS_OUTPUT.PUT_LINE('Count = ' || counter);
+		counter := counter + 1;
+	end LOOP;
+
+END;
+
+---------------------------------------------------------------------------------------------------------
+
+- another example of loops
+
+DECLARE
+
+	custname NUMBER(3);
+	
+	
+BEGIN
+	counter := 1;
+
+	WHILE count >= 1 LOOP
+		DMBS_OUTPUT.PUT_LINE('Count = ' || counter);
+		counter := counter - 1;
+	end LOOP;
+
+END;
+
+---------------------------------------------------------------------------------------------------------
+
+- using for loop
+
+DECLARE
+
+	custname NUMBER(3);
+	
+BEGIN
+	count := 1;
+
+	FOR counter IN 1..10 LOOP
+		DMBS_OUTPUT.PUT_LINE('Count = ' || counter);
+	end LOOP;
+
+END;
+
+--------------------------------------------------------------------------------------------------------
+
+- counting by 2's using for loop
+
+DECLARE
+
+	custname NUMBER(3);
+	
+BEGIN
+	count := 1;
+
+	FOR counter IN 1..10 LOOP
+		DMBS_OUTPUT.PUT_LINE('Count = ' || counter * 2);
+	end LOOP;
+
+END;
+
+- counting by 2's using for loop
+
+********************************************************************************************************
+- another way to do what we did in previous example
+
+DECLARE
+
+	custname NUMBER(3);
+	
+BEGIN
+	count := 1;
+
+	FOR counter IN 1..10 LOOP
+	  if MOD(counter,2) <> 10 then
+		DMBS_OUTPUT.PUT_LINE('Count = ' || counter);
+	end LOOP;
+
+END;
+
+--------------------------------------------------------------------------------------------------------
+
+- decrements previous example
+
+DECLARE
+
+	custname NUMBER(3);
+	
+BEGIN
+	count := 1;
+
+	FOR counter IN 1..10 LOOP
+	  if MOD(counter,2) <> then
+		DMBS_OUTPUT.PUT_LINE('Count = ' || counter);
+	  end if;
+	end LOOP;
+
+END;
+
+--------------------------------------------------------------------------------------------------------
+
+- do while loop
+
+DECLARE
+
+	custname NUMBER(3);
+	
+BEGIN
+	counter := 1;
+
+	LOOP
+		DMBS_OUTPUT.PUT_LINE('Count = ' || counter);
+	EXIT WHEN counter = 10;
+		counter := counter + 1;
+	end LOOP;
+
+END;
+
+--------------------------------------------------------------------------------------------------------
+
+- using SQL SELECT (getting all info from author table)
+
+DECLARE 
+	fname VARCHAR2(30);
+	lname VARCHAR2(30);
+
+BEGIN
+	
+	SELECT au_fname, au_lname
+	INTO fname, lname
+	FROM author
+
+	DMBS_OUPUT.PUT_LINE(fname || ' ' || lname);
+
+END;
+
+--------------------------------------------------------------------------------------------------------
+
+- using SQL SELECT (getting a specific record from author table)
+
+DECLARE 
+	fname VARCHAR2(30);
+	lname VARCHAR2(30);
+	id VARCHAR2(10);
+
+BEGIN
+	
+	id := '185';
+
+	SELECT au_fname, au_lname
+	INTO fname, lname
+	FROM author
+	WHERE au_id = id;
+
+	DMBS_OUPUT.PUT_LINE(fname || ' ' || lname);
+
+END;
+
+---------------------------------------------------------------------------------------------------------
+
+- using %TYPE attribute
+
+DECLARE 
+	fname author.au_fname%TYPE;
+	lname author.au_lname%TYPE;
+	id VARCHAR2(10);
+
+BEGIN
+	
+	id := '185';
+
+	SELECT au_fname, au_lname
+	INTO fname, lname
+	FROM author
+	WHERE au_id = id;
+
+	DMBS_OUPUT.PUT_LINE(fname || ' ' || lname);
+
+END;
+
+---------------------------------------------------------------------------------------------------------
+
+- using %ROWTYPE attribute
+
+DECLARE 
+	au_rec author%ROWTYPE;
+	id VARCHAR2(10);
+
+BEGIN
+	
+	id := '185';
+
+	SELECT *
+	INTO au_rec
+	FROM author
+	WHERE au_id = id;
+
+	DMBS_OUPUT.PUT_LINE(au_rec.au_fname || ' ' || au_rec.au_lname);
+
+END;
+
+---------------------------------------------------------------------------------------------------------
+
+- CURSOR example
+
+DECLARE 
+	CURSOR au_cursor IS
+		SELECT au_fname, au_lname   
+		FROM author;
+
+	TYPE au_rec IS RECORD 
+	(
+		fname author.au_fname%TYPE,
+		lname author.au_lname%TYPE
+	);
+	
+	rec1 au_rec;
+
+BEGIN
+	
+	OPEN au_cursor;
+
+	LOOP
+		FETCH au_cursor INTO rec1;
+			DMBS_OUPUT.PUT_LINE(rec1.fname || ' ' || rec1.lname);
+		EXIT WHEN au_cursor%NOTFOUND;
+	END LOOP;
+
+	CLOSE au_cursor;
+
+END;
+
+---------------------------------------------------------------------------------------------------------
+
+- CURSOR example with condition
+
+DECLARE 
+	
+	search_str author.au_lname%TYPE;
+
+	CURSOR au_cursor IS
+		SELECT au_fname, au_lname   
+		FROM author
+		WHERE au_lname = search _str;
+
+	TYPE au_rec IS RECORD 
+	(
+		fname author.au_fname%TYPE,
+		lname author.au_lname%TYPE
+	);
+	
+	rec1 au_rec;
+
+BEGIN
+	
+	search_str := 'Salvadore';
+
+	OPEN au_cursor;
+
+	LOOP
+		FETCH au_cursor INTO rec1;
+		EXIT WHEN au_cursor%NOTFOUND;
+			DMBS_OUPUT.PUT_LINE(rec1.fname || ' ' || rec1.lname);
+	END LOOP;
+
+	CLOSE au_cursor;
+
+END;
+
+---------------------------------------------------------------------------------------------------------
+
+- CURSOR example with WHILE LOOP
+
+DECLARE 
+	
+	search_str author.au_lname%TYPE;
+
+	CURSOR au_cursor IS
+		SELECT au_fname, au_lname   
+		FROM author
+		WHERE au_lname = search _str;
+
+	TYPE au_rec IS RECORD 
+	(
+		fname author.au_fname%TYPE,
+		lname author.au_lname%TYPE
+	);
+	
+	rec1 au_rec;
+
+BEGIN
+	
+	search_str := 'Salvadore';
+
+	OPEN au_cursor;
+	WHILE au_cursor%FOUND
+
+	LOOP
+		FETCH au_cursor INTO rec1;
+		EXIT WHEN au_cursor%NOTFOUND
+			DMBS_OUPUT.PUT_LINE(rec1.fname || ' ' || rec1.lname);
+	END LOOP;
+
+	CLOSE au_cursor;
+
+END;
+
+---------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE PROCEDURE greeting (fname IN VARCHAR2)
+
+	AS
+
+BEGIN
+
+	DMBS_OUPUT.PUT_LINE('Hello '  ||  fname);
+
+END;
+
+BEGIN 
+	greeting('Grub.');
+
+END;
+
+---------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE PROCEDURE arith
+
+	 (n1 IN NUMBER, n2 IN NUMBER)
+
+	AS
+	
+	add NUMBER(5);
+	subtract NUMBER(5);
+	multiply NUMBER(5);
+	divide NUMBER(5);
+
+BEGIN
+	
+	add := n1 + n2;
+	subtract := n1 - n2;
+	multiply := n1 * n2;
+	divide := n1 / n2;
+
+	DMBS_OUPUT.PUT_LINE(n1 || ' + ' || n2 || ' = ' ||  add);
+	DMBS_OUPUT.PUT_LINE(n1 || ' - ' ||  n2 || ' = ' ||  subtract);
+	DMBS_OUPUT.PUT_LINE(n1 || ' * ' ||  n2 || ' = ' ||  multiply);
+	DMBS_OUPUT.PUT_LINE(n1 || ' / ' ||  n2 || ' = ' ||  divide);
+
+END;
+
+BEGIN 
+	arith(10, 5);
+
+END;
+

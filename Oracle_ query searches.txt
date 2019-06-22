@@ -1,0 +1,244 @@
+describe author
+describe writer
+
+1. Find the names of the author who wrote the book titled "Database in the Cloud"
+
+*This search could not another field such as "book_title" in the select....Example 2 / 3 could
+select au_fname, au_lname
+from author a where a.au_id in
+(select au_id from writes w where w.book_num in
+(select book_num from book where book_title = 'Database in the Cloud'))
+
+*Same as the Example 1 but Example 2 is an older way of combinding tables
+select disinct au_fname, au_lname
+from author a, writes w, book b
+where a.au_id = w.au_id
+and w.book_num = b.book_num
+and book_title = 'Database in the Cloud'
+
+*(another way to get the same results as Example 1)
+select au_fname, au_lname
+from author a INNER JOIN writes w ON a.au_id = w.au_id
+INNER Join book b on w.book_num = b.book_num
+WHERE book_title = 'Database in the Cloud'
+
+
+2. Find the names of the authors who was born in 1961 and wrote books in 2013
+
+*intersection question
+select au_fname, au_lname
+from author a where au_birthyear = 1961 and a.au_id in
+(select au_id from writes w where w.book_num in
+(select book_num from book where book_year = 2013))
+
+*another example
+select au_fname, au_lname
+from author a, writes w, book b
+where a.au_id = w.au_id
+and w.book_num = b.book_num
+and au_birthyear = 1961
+and book_year = 2013
+
+*
+select au_fname, au_lname
+from author a INNER JOIN writes w ON a.au_id = w.au_id
+INNER Join book b on w.book_num = b.book_num
+WHERE au_birthyear = 1961
+and book_year = 2013
+
+*
+Select au_fname, au_lname
+from author a where au_birthyear = 1961
+INTERSECT
+Select au_fname, au_lname
+from author a, writes w, book b
+where a.au_id = w.au_id
+and w.book_num = b.book_num
+and book_year = 2013
+
+(This is a interesect because of the 2 searches. The first part will find the people born in 1961. The second search
+will find all the people who wrote books in 2013. once interect it limits our search to find what we need)
+
+Example 8: (UNION)
+Select au_fname, au_lname
+from author a where au_birthyear = 1961
+Union
+Select au_fname, au_lname
+from author a, writes w, book b
+where a.au_id = w.au_id
+and w.book_num = b.book_num
+and book_year = 2013
+
+
+3. Find the names of the authors who was born in 1961 or wrote books in 2013
+Select au_fname, au_lname
+from author a where au_birthyear = 1961
+UNION
+Select au_fname, au_lname
+from author a, writes w, book b
+where a.au_id = w.au_id
+and w.book_num = b.book_num
+or book_year = 2013
+
+
+4. Find the names of the authors who was not born 1961 and wrote books in 2013
+Select au_fname, au_lname
+from author a, writes w, book b
+where a.au_id = w.au_id
+and w.book_num = b.book_num
+and book_year = 2013
+MINUS
+Select au_fname, au_lname
+from author a where au_birthyear = 1961
+
+5. Find the names of authors regardless of whether they have written a book or not
+
+select au_fname, au_lname
+from author a LEFT OUTER JOIN writes w ON au.au_id = w.au_id
+
+select * from writer
+select * from author
+
+select distinct a.au_id, au_fname, au_lname
+from author a JOIN WHERE w ON a.au_id = w.au_id
+
+* could use this as well: 
+select distinct a.au_id, au_fname, au_lname
+from author a JOIN WHERE w ON a.au_id = w.au_id
+
+6. cartisian (cross) product
+
+* cartisian product
+select au_fname, au_lname
+from author a, writes w 
+
+7. Find the average cost of books that were published in 2013
+
+select avg(book_cost) AS Average Book_Cost from book 
+where book_year = '2013'
+ 
+* could do this as well (use double quotes to rename field)
+
+select avg(book_cost) AS "Average Book Cost" from book
+
+8. Find the names of authors who wrote books that cost more than the average cost of books published in 2013
+
+select au_fname, au_lname, book_cost
+from author a JOIN writes w ON a.au_id = w.au_id
+INNER Join book b ON w.book_num = b.book_num
+WHERE book_cost > 
+(select avg(book_cost)  from book where book_year = '2013')
+
+9. Find the total cost of books published per year
+
+select book_year, sum(book_cost)
+from book
+group by book_year
+
+* main aggregation functions 
+1. sum
+2. avg. 
+3. max
+4. min
+5. count
+
+10. Find the total cost of books published per year but only show total cost over $500
+
+select book_year, sum(book_cost)
+from book
+group by book_year
+having sum(book_cost) > 500
+
+11. Find how many books were written by the author named Benson Reeves
+* better to use this way, more efficient
+
+select count(book_num) from book 
+where book_num in
+(select book_num from writes where au_id in
+     (select au_id from author where au_fname = 'Benson' and au_lname = 'Reeves'))
+
+*or could do the following:
+
+select count(b.book_num)
+from author a JOIN writes w ON a.au_id = w.au_id
+JOIN book b ON w.book_num = b.book_num 
+where au_fname = 'Benson' and au_lname = 'Reeves
+
+12. Find the books that were published between 2012 and 2014
+
+*get all details
+
+select * from book where book_year between 2012 and 2014
+
+*another way to get the same results
+select * from book where book_year >= 2012 and book_year <= 2014
+
+13. Find all details about the authors sorting them in ascending order by last name, then descending order by first name
+
+select * from author order by au_lname, au_fname desc
+
+* desc->(descending)
+
+* create copy of book table
+create table book 2 as 
+select * from book 
+
+14. Increase all book costs by 10%
+
+Update book2 set book_cost = book_cost * 1.10
+
+15. Find the book title, book cost, year published and a 25% increase on the book cost for all programming books 
+that were published in 2013
+
+select book_title, book_year, book_cost, (book_cost * 1.25) AS "Mark Up Cost"
+from book2 where book_subject = 'Programming'
+and book_year = '2013'
+
+a. 
+select book_title, book_year, book_cost, ROUND(book_cost * 1.25, 2) AS "Mark Up Cost"
+from book2 where book_subject = 'Programming'
+and book_year = '2013'
+
+b. 
+select book_title, book_year, book_cost, CEIL(book_cost * 1.25, 2) AS "Mark Up Cost"
+from book2 where book_subject = 'Programming'
+and book_year = '2013'
+
+c.
+select book_title, book_year, book_cost, FLOOR(book_cost * 1.25, 2) AS "Mark Up Cost"
+from book2 where book_subject = 'Programming'
+and book_year = '2013'
+
+d. 
+select book_title, book_year, book_cost, TO_CHAR(book_cost * 1.25, '9999.99') AS "Mark Up Cost"
+from book2 where book_subject = 'Programming'
+and book_year = '2013'
+
+* to add in thousands and monetary value, '$999,999.99'
+* to show 84.00 if 84 dollars -> '$999,999.00'
+* preferred method is the $84 dollars one
+
+* the 2 after 1.25 is the decimal places
+* CEIL rounds number up to highest whole number
+* FLOOR will round to lowest value 
+
+16. 
+
+select au_fname || ' ' || UPPER(au_lname) from author
+select to char(check_out_date, 'mm/dd/yyyy') from checkout
+
+select TO_CHAR(sys_date - to_date(check_out_date, 'mm/dd/yyyy'), '99999.00') AS "Days Overdue"
+from checkout
+
+* UPPER makes au_lname uppercase
+* || is the + in Java, and ampersand in VB
+* || ' ' || leaves space between 
+
+* grant access
+grant select on author to public
+
+* grant to update records
+grant update on author to public
+
+* take away privilege 
+revoke update on author from public
